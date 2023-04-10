@@ -97,3 +97,13 @@ body {
     width: 20px;
     height: 20px;
 }
+
+.fetched-data {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    background-color: var(--lm-bg-content);
+    border-radius: 10px;
+    box-shadow: var(--lm-shadow);
+}

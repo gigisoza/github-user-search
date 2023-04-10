@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Header } from "./components/Header"
 import { SearchBar } from "./components/SearchBar"
+import { FetchedData } from "./components/FetchedData";
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
           search="Search" value={value} setValue={setValue} handleValue={handleValue} 
           click={click} setClick={setClick} handleClick={handleClick}
         />
+        <FetchedData />
       </div>
     </div>
   )
