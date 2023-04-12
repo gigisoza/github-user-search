@@ -2,6 +2,7 @@ import { useContext, useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { ThemeContext } from "../contexts/ThemeContext";
 import { TopAreaProps, UserProps } from "../types";
+import { joinedDate } from "../utils/formatter";
 
 export const TopArea = ({ setUser }: TopAreaProps) => {
   const { changeTheme, lightMode } = useContext(ThemeContext);
@@ -35,8 +36,30 @@ export const TopArea = ({ setUser }: TopAreaProps) => {
     }
 
     setNotFound(false);
-    console.log(data);
+
+    const user: UserProps = {
+      pfp: data.avatar_url,
+      name: data.name,
+      joinedAt: joinedDate(data.created_at),
+      username: data.login,
+      bio: data.bio,
+      repos: data.public_repos,
+      followers: data.followers,
+      following: data.following,
+      links: {
+        location: data.location,
+        twitter: data.twitter_username,
+        company: data.company,
+        blog: data.blog,
+      },
+    };
+
+    setUser(user);
   }
+
+  useEffect(() => {
+    fetchUser(inputUser);
+  }, [inputUser]);
 
   return (
     <Container>
@@ -85,6 +108,8 @@ export const TopArea = ({ setUser }: TopAreaProps) => {
           type="text"
           placeholder="Search username ..."
         />
+        {empty && <Warn>Enter User</Warn>}
+        {notFound && <Warn>Not Found</Warn>}
 
         <SubmitBtn type="submit">Search</SubmitBtn>
       </InputArea>
@@ -103,6 +128,14 @@ const ThemeArea = styled.div`
   justify-content: space-between;
 `;
 
+const Warn = styled.small`
+  font-weight: bold;
+  font-size: 1.5rem;
+  line-height: 2.2rem;
+  color: #f74646;
+  margin-right: 2.4rem;
+`;
+
 const ChangeThemeBtn = styled.button`
   display: flex;
   align-items: center;
@@ -114,7 +147,6 @@ const ChangeThemeBtn = styled.button`
   letter-spacing: 0.25rem;
   color: ${(props) => props.theme.colors.themeBtn};
   cursor: pointer;
-
   img {
     margin-left: 1.6rem;
   }
