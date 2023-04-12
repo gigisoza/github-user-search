@@ -1,36 +1,37 @@
-import { useState } from "react"
-import { Header } from "./components/Header"
-import { SearchBar } from "./components/SearchBar"
-import { FetchedData } from "./components/FetchedData";
+import styled from "styled-components";
+import { ThemeContextProvider } from "./contexts/ThemeContext";
+import { TopArea } from "./components/TopArea";
+import { useState } from "react";
+import { UserProps } from "./types";
 
 function App() {
+  const [user, setUser] = useState<UserProps | null>(null);
 
-  const [value, setValue] = useState("");
-  const [click, setClick] = useState(false);
-
-  const handleValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setValue(
-          e.target.value
-      )
-  }
-
-  const handleClick = () => {
-    setClick((click) => (!click))
-    setValue("")
+  function setUserData(user: UserProps | null): void {
+    setUser(user);
   }
 
   return (
-    <div className="App">
-      <div className="container">
-        <Header title="devfinder" icon="dark" />
-        <SearchBar 
-          search="Search" value={value} setValue={setValue} handleValue={handleValue} 
-          click={click} setClick={setClick} handleClick={handleClick}
-        />
-        <FetchedData />
-      </div>
-    </div>
-  )
+    <ThemeContextProvider>
+      <Container>
+        <TopArea setUser={setUserData} />
+      </Container>
+    </ThemeContextProvider>
+  );
 }
 
-export default App
+const Container = styled.main`
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: ${(props) => props.theme.colors.background};
+  padding: 3.1rem 2.4rem;
+
+  @media (min-width: 768px) {
+    padding: 3.1rem 7rem;
+  }
+`;
+
+export default App;
